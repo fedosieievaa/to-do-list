@@ -1,66 +1,77 @@
 import React, { useState } from "react";
-
-const Tasks = () => {
-    const [taskKey, setTaskKey] = useState(Number(localStorage.getItem("taskKey")));
+    // В селекті по дефолту вибрана група;
+export const Tasks = () => {
     const [task, setTask] = useState("");
     const [taskGroup, setTaskGroup] = useState("");
-    const [status, setStatus] = useState("");
-    const tasks = [];
-    const groups = [];
-    const statuses = ["new", "in progress", "done"];
+    const groups = JSON.parse(localStorage.getItem("groups"));
+    let tasks;
 
-    localStorage.setItem("new", statuses[0]);
-    localStorage.setItem("in progress", statuses[1]);
-    localStorage.setItem("done", statuses[2]);
+    localStorage.tasks ? tasks = JSON.parse(localStorage.getItem("tasks")) : tasks = [];
+    tasks = tasks.filter(({ taskGroup }) => groups.includes(taskGroup));
+ 
+    const updateTasks = () => {
+        localStorage.setItem("tasks", JSON.stringify(tasks)); 
+    }
+
+    updateTasks();
 
     const addTask = (e) => {
         e.preventDefault();
-        setTaskKey((prev) => prev + 1);
-        localStorage.setItem(('0' + taskKey), (task + "|" + taskGroup));
-        localStorage.setItem("taskKey", ('0' + (taskKey + 1)));
+        if(task && taskGroup) {
+            tasks.push({ task: task, taskGroup: taskGroup, status: "new" });
+            updateTasks();
+        } else {
+            alert("Add task and select a group")
+        }
         setTask("");
     }
-
-    for(let i = 0; i <= Number(localStorage.getItem("groupKey")); i++) {
-        groups.push(localStorage.getItem(i));
-    }
-
-    for(let i = 0; i <= Number(localStorage.getItem("taskKey")); i++) {
-        tasks.push(localStorage.getItem('0' + i));
-    }
-
+    
     return(
         <div className="groups-tasks_container">
             <h3>Add new task:</h3>
-           <form className="form"  action="#" onSubmit={addTask}>
-                <input className="form_input" type="text" value={task} placeholder="Add new task." onChange={ (e) => setTask(e.target.value) } />
-                <select className="form_select" id="select" value={taskGroup} onChange={ (e) => setTaskGroup(e.target.value)} >
-                    { groups.map((group) => {
+            <form className="form"  action="#" onSubmit={addTask}>
+                <input className="form_input" type="text" value={task} placeholder="Add new task." onChange={(e) => setTask(e.target.value)} />
+                <select className="form_select" id="select" value={taskGroup} onChange={(e) => setTaskGroup(e.target.value)}>
+                { groups ? 
+                    groups.map((group) => {
                         if(group) {
-                           return <option  className="form_option" >{group}</option> 
+                            return(<option className="form_option">{group}</option>)
                         }
-                      }) 
-                    } 
+                    }) : ""
+                } 
                 </select>
                 <button className="form_btn">Add task</button>
             </form>
             <div>
-                {tasks.map((task) => {
-                    if(task) {
-                        return(
-                            <div className="task">
-                                <li className="task_item">{ task.substring(0,1).toUpperCase() + task.substring(1).match(/.*\|/)}</li>
-                                <span>{task.match(/\|.*/)}</span>
-                                <select className="task_status" value={status} onChange={ (e) => setStatus(e.target.value)}>
-                                    { statuses.map((item) => <option>{item}</option> ) }
-                                </select>
+            {tasks.map(({ task, taskGroup }, index) => {
+                if(task) {
+                    return(
+                        <div id={index} className="task">
+                            <li className="task_item">{task.substr(0,1).toUpperCase() + task.substr(1)}</li>
+                            <div className="task_funcs">
+                                <span className="task_group">{taskGroup}</span>
+                                <div className="status">{tasks[index].status}</div>
+                                <div className="status_btns">
+                                    <button onClick={() => {
+                                        tasks[index].status = "in progress";
+                                        updateTasks();
+                                        window.location.reload();
+                                    }}>START</button>
+                                    <button onClick={() => {
+                                        tasks[index].status = "done";
+                                        updateTasks();
+                                        window.location.reload();
+                                    }}>COMPLETE</button>
+                                </div>
+                                <button className="delete" onClick={() => {
+                                    tasks.splice(index, 1);
+                                    localStorage.setItem("tasks", JSON.stringify(tasks));
+                                    window.location.reload();
+                                }}>X</button>
                             </div>
-                        )
-                    }
-                } )}
-            </div>
+                        </div>)
+                }
+            })}
         </div>
-    )
+    </div>)
 }
-
-export default Tasks;

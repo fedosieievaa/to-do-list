@@ -1,4 +1,4 @@
-const TopLine = () => {
+export const TopLine = () => {
     return(
         <div className="topline_container">
             <div className="sidebar_btn">
@@ -10,5 +10,3 @@ const TopLine = () => {
         </div>
     )
 }
-
-export default TopLine;
