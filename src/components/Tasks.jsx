@@ -21,7 +21,7 @@ export const Tasks = () => {
             tasks.push({ task: task, taskGroup: taskGroup, status: "new" });
             updateTasks();
         } else {
-            alert("Add task and select a group")
+            alert("Add task and select a group");
         }
         setTask("");
     }
@@ -30,48 +30,39 @@ export const Tasks = () => {
         <div className="groups-tasks_container">
             <h3>Add new task:</h3>
             <form className="form"  action="#" onSubmit={addTask}>
-                <input className="form_input" type="text" value={task} placeholder="Add new task." onChange={(e) => setTask(e.target.value)} />
+                <input className="form_input" type="text" value={task} onChange={(e) => setTask(e.target.value)} placeholder="Add new task."/>
                 <select className="form_select" id="select" value={taskGroup} onChange={(e) => setTaskGroup(e.target.value)}>
-                { groups ? 
-                    groups.map((group) => {
-                        if(group) {
-                            return(<option className="form_option">{group}</option>)
-                        }
-                    }) : ""
-                } 
+                { groups ? groups.map((group) => (<option className="form_option">{group}</option>)) : "" }
                 </select>
                 <button className="form_btn">Add task</button>
             </form>
             <div>
             {tasks.map(({ task, taskGroup }, index) => {
-                if(task) {
-                    return(
-                        <div id={index} className="task">
-                            <li className="task_item">{task.substr(0,1).toUpperCase() + task.substr(1)}</li>
-                            <div className="task_funcs">
-                                <span className="task_group">{taskGroup}</span>
-                                <div className="status">{tasks[index].status}</div>
-                                <div className="status_btns">
-                                    <button onClick={() => {
-                                        tasks[index].status = "in progress";
-                                        updateTasks();
-                                        window.location.reload();
-                                    }}>START</button>
-                                    <button onClick={() => {
-                                        tasks[index].status = "done";
-                                        updateTasks();
-                                        window.location.reload();
-                                    }}>COMPLETE</button>
-                                </div>
-                                <button className="delete" onClick={() => {
-                                    tasks.splice(index, 1);
-                                    localStorage.setItem("tasks", JSON.stringify(tasks));
+                return(
+                    <div id={index} className="task">
+                        <li className="task_item">{task.substr(0,1).toUpperCase() + task.substr(1)}</li>
+                        <div className="task_funcs">
+                            <span className="task_group">{taskGroup}</span>
+                            <div className="status">{tasks[index].status}</div>
+                            <div className="status_btns">
+                                <button onClick={() => {
+                                    tasks[index].status = "in progress";
+                                    updateTasks();
                                     window.location.reload();
-                                }}>X</button>
+                                }}>START</button>
+                                <button onClick={() => {
+                                    tasks[index].status = "done";
+                                    updateTasks();
+                                    window.location.reload();
+                                }}>COMPLETE</button>
                             </div>
-                        </div>)
-                }
-            })}
-        </div>
-    </div>)
+                            <button className="delete" onClick={() => {
+                                tasks.splice(index, 1);
+                                updateTasks();
+                                window.location.reload();
+                            }}>X</button>
+                        </div>
+                    </div>)})}
+            </div>
+        </div>)
 }
