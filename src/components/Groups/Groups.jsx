@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import s from "./Groups.module.css";
 
 export const Groups = () => {
     const [group, setGroup] = useState("");
+    const [isDeleted, setIs] = useState("");
     let groups;
 
     localStorage.groups ? groups = JSON.parse(localStorage.getItem("groups")) : groups = [];
@@ -28,19 +30,19 @@ export const Groups = () => {
     }
     
     return(
-        <div className="groups-tasks_container">
+        <div className={s.groups_container}>
             <h3>Add new group:</h3>
-            <form className="form"  action="#" onSubmit={addGroup}>
-                <input className="form_input" type="text" value={group} onChange={ (e) => setGroup(e.target.value) } placeholder="New group for your tasks."/>
-                <button className="form_btn">Add group</button>
+            <form className={s.form}  action="#" onSubmit={addGroup}>
+                <input className={s.form_input} type="text" value={group} onChange={ (e) => setGroup(e.target.value) } placeholder="New group for your tasks."/>
+                <button className={s.form_btn}>Add group</button>
             </form>
             <div>
             { groups.map((group, index) => {
                 return(
-                    <div id={"0" + index} className="group">
-                        <div className="group_time">{getDate()}</div>
-                        <div className="group_item">{group}</div>
-                        <button className="delete" onClick={() => {
+                    <div id={"0" + index} className={s.group}>
+                        <div className={s.group_time}>{getDate()}</div>
+                        <div className={s.group_item}>{group}</div>
+                        <button className={s.delete} onClick={() => {
                                 groups.splice(("0" + index), 1);
                                 updateGroups();
                                 window.location.reload();

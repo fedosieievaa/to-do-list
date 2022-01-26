@@ -1,0 +1,90 @@
+.groups_container {
+    margin: 51px 0 0 20px;
+}
+
+.form,
+.group {
+    background-color: rgb(29, 39, 44);
+    border: 1px solid rgb(24, 23, 23);
+}
+
+.form {
+    padding: 12px 10px;
+    margin-bottom: 60px;
+}
+
+.form_input {
+    width: 810px;
+    margin: 0 50px 0 50px;
+    padding: 10px;
+    background: transparent;
+    color: #90a4ae;
+    outline: none;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.form_input::placeholder {
+    color: #90a4ae;
+}
+
+.form_input:hover,
+.form_input:focus {
+    border: 1px solid rgb(24, 23, 23);
+}
+
+.form_btn {
+    background-color: rgb(30, 171, 241);
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 10px 8px;
+}
+
+.form_btn:hover {
+    background-color: rgb(24, 144, 204);
+}
+
+.group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1100px;
+    border-bottom: 5px solid rgb(18, 25, 29);
+    border-right: 1px solid rgb(18, 25, 29);
+    border-left: 1px solid rgb(18, 25, 29);
+    margin: 0 0 30px 0;
+}
+
+.group_time {
+    background: rgb(18, 25, 29);
+    padding: 10px;
+    margin: 0 0 0 20px;
+}
+
+.group_item {
+    text-transform: uppercase;
+    padding: 20px 10px;
+}
+
+.delete {
+    width: 25px;
+    height: 20px;
+    margin: 0 20px 0 0;
+    border-radius: 3px;
+    border-style: none;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: rgb(18, 88, 179);
+}
+
+.delete:hover {
+    background-color: rgb(38, 111, 206);
+}
+
+.delete:active {
+    color: #c2c2c2;
+}
