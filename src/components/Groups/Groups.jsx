@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import s from "./Groups.module.css";
+import css from "./Groups.module.css";
+import { GroupForm } from "./GroupForm";
+import { GroupItem } from "./GroupItem";
+import { render } from "@testing-library/react";
 
 export const Groups = () => {
     const [group, setGroup] = useState("");
     const [isDeleted, setIs] = useState("");
     let groups;
-
     localStorage.groups ? groups = JSON.parse(localStorage.getItem("groups")) : groups = [];
 
     const getDate = () => {
@@ -30,24 +32,17 @@ export const Groups = () => {
     }
     
     return(
-        <div className={s.groups_container}>
-            <h3>Add new group:</h3>
-            <form className={s.form}  action="#" onSubmit={addGroup}>
-                <input className={s.form_input} type="text" value={group} onChange={ (e) => setGroup(e.target.value) } placeholder="New group for your tasks."/>
-                <button className={s.form_btn}>Add group</button>
-            </form>
+        <div className={css.groups_container}>
+            <GroupForm css={css} addGroup={addGroup} group={group} setGroup={setGroup}/>
             <div>
-            { groups.map((group, index) => {
-                return(
-                    <div id={"0" + index} className={s.group}>
-                        <div className={s.group_time}>{getDate()}</div>
-                        <div className={s.group_item}>{group}</div>
-                        <button className={s.delete} onClick={() => {
-                                groups.splice(("0" + index), 1);
-                                updateGroups();
-                                window.location.reload();
-                            }}>X</button>
-                    </div>)}) }
+            { groups.map((group, index) => <GroupItem 
+                index={index} 
+                css={css} 
+                getDate={getDate} 
+                group={group} 
+                groups={groups} 
+                updateGroups={updateGroups}/>)
+            } 
             </div>
         </div>
     )
