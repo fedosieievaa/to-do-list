@@ -1,18 +1,18 @@
 import React from "react";
 
-export const GroupForm = ({ css, addGroup, group, setGroup}) => {
+export const GroupForm = (props) => {
     return(
         <div>
             <h3>Add new group:</h3>
-            <form className={css.form} onSubmit={addGroup}>
+            <form className={props.css.form} onSubmit={props.addGroup}>
                 <input 
-                    className={css.form_input} 
+                    className={props.css.form_input} 
                     type="text" 
-                    value={group} 
-                    onChange={(e) => setGroup(e.target.value)} 
+                    value={props.group} 
+                    onChange={(e) => props.setGroup(e.target.value)} 
                     placeholder="New group for your tasks."
                 />
-                <button className={css.form_btn}>Add group</button>
+                <button className={props.css.form_btn}>Add group</button>
             </form>
         </div>
     )

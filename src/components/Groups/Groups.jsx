@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import css from "./Groups.module.css";
 import { GroupForm } from "./GroupForm";
 import { GroupItem } from "./GroupItem";
-import { render } from "@testing-library/react";
 
 export const Groups = () => {
     const [group, setGroup] = useState("");
-    const [isDeleted, setIs] = useState("");
-    let groups;
-    localStorage.groups ? groups = JSON.parse(localStorage.getItem("groups")) : groups = [];
-
+    const [groups, setGroups] = useState([]);
+    
+    useEffect(() => {
+        setGroups(JSON.parse(localStorage.getItem("groups")));
+    }, [])
+    
     const getDate = () => {
         const dateObj = new Date();
         const month = dateObj.getUTCMonth() + 1; 
@@ -18,16 +19,17 @@ export const Groups = () => {
         return day + "/" + month + "/" + year;
     }
 
-    const updateGroups = () => {
+    useEffect(() => {
         localStorage.setItem("groups", JSON.stringify(groups)); 
-    }
+    }, [groups])
 
-    updateGroups();
+    const filterTasks = () => {
+        localStorage.setItem("tasks", JSON.stringify(JSON.parse(localStorage.getItem("tasks")).filter(({ taskGroup }) => groups.includes(taskGroup)))); 
+    }
 
     const addGroup = (e) => {
         e.preventDefault(); 
-        groups.push(group);
-        updateGroups();
+        setGroups([...groups, group]);
         setGroup("");
     }
     
@@ -41,7 +43,8 @@ export const Groups = () => {
                 getDate={getDate} 
                 group={group} 
                 groups={groups} 
-                updateGroups={updateGroups}/>)
+                setGroups={setGroups}
+                filterTasks={filterTasks}/>)
             } 
             </div>
         </div>
